@@ -57,7 +57,8 @@ class Mihoyobbs:
         data = req.json()
         if data["retcode"] != 0:
             return None
-        validate = captcha.bbs_captcha(data["data"]["gt"], data["data"]["challenge"])
+        referer = self.headers.get("referer",None) or self.headers.get("Referer",None)
+        validate = captcha.bbs_captcha(data["data"]["gt"], data["data"]["challenge"], referer=referer)
         if validate is not None:
             check_req = http.post(url=setting.bbs_captcha_verify, headers=self.headers,
                                   json={"geetest_challenge": data["data"]["challenge"],

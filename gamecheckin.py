@@ -94,7 +94,8 @@ class GameCheckin:
                 continue
             data = req.json()
             if data["retcode"] == 0 and data["data"]["success"] == 1 and i < retries:
-                validate = captcha.game_captcha(data["data"]["gt"], data["data"]["challenge"])
+                referer = header.get("Referer", None) or header.get("referer", None) 
+                validate = captcha.game_captcha(data["data"]["gt"], data["data"]["challenge"], referer=referer)
                 if validate:
                     header.update({
                         "x-rpc-challenge": data["data"]["challenge"],
