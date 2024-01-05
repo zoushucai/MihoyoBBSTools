@@ -1,20 +1,14 @@
-import os
 import logging
+import os
+from datetime import datetime
 
-# Log输出，这里提供了自定义logging输出的机会，只需要创建一个logging.ini并且写入配置文件即可自定义输出
-file_path = os.path.dirname(os.path.realpath(__file__)) + "/config/logging.ini"
-if os.path.exists(file_path):
-    import logging.config
+from loguru import logger as log
 
-    logging.config.fileConfig(file_path)
-    log = logging.getLogger("AutoMihoyoBBS")
-else:
-    logging.basicConfig(
-        level=logging.INFO,
-        format='%(asctime)s %(levelname)s %(message)s',
-        datefmt='%Y-%m-%dT%H:%M:%S')
-    log = logging
+current_directory = os.path.dirname(os.path.realpath(__file__))
 
-# 获取httpx的日志记录器，并将其级别设置为CRITICAL，让日志不再输出httpx的相关日志
-httpx_log = logging.getLogger("httpx")
-httpx_log.setLevel(logging.CRITICAL)
+mlogs_directory = "logs_mhy"
+log_file = f"qiandao_{datetime.now():%Y-%m-%d}.log"
+file_path = os.path.join(current_directory, mlogs_directory, log_file)
+os.makedirs(os.path.join(current_directory, mlogs_directory), exist_ok=True)
+log.add(file_path, rotation="5 MB", compression="zip", encoding="utf-8")
+httpx_log = log
