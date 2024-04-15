@@ -14,7 +14,7 @@ def captcha_renren(gt: str, challenge: str, referer = None, userlabel = None):
     log.info(f"challenge: {challenge}")
     assert gt and challenge, "gt 和 challenge 不能为空"
     data={
-            "appkey": "2b63b7e1e22d4403a5430c77580a3f7d", 
+            "appkey": "ad87e8b590fe415c9571daa2453cbe6b", 
             "gt": gt,
             "challenge": challenge,
             "referer": referer
